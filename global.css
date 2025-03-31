@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply default background color */
+:root {
+  background-color: #06151d;
+}
+
+/* Ensure body takes full height and applies background color */
+body {
+  @apply bg-[#06151D] min-h-screen;
+}
+
+/* For React Native Web, ensure the app container has the background */
+#root,
+#__next {
+  @apply bg-[#06151D] min-h-screen;
+}
