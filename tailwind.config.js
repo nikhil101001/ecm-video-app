@@ -9,6 +9,7 @@ module.exports = {
         darkOrange: "#2F1A0A",
         primary: "#0081C9",
         secondary: "#EB8535",
+        darkBlue: "#182B34",
       },
     },
   },

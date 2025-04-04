@@ -31,7 +31,7 @@ const GoogleHeaderProfile = () => {
         <TouchableWithoutFeedback onPress={() => setShowDropdown(false)}>
           <View className="flex-1">
             <TouchableWithoutFeedback>
-              <View className="absolute right-4 top-14 bg-gray-950 shadow-md rounded-md w-fit px-2 z-10 border border-white/10">
+              <View className="absolute right-4 top-14 bg-gray-950 shadow-md rounded-lg w-fit px-2 z-10 border border-white/10">
                 <TouchableOpacity
                   className="px-2 py-3 border-b border-white/10"
                   onPress={() => {

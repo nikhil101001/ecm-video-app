@@ -35,7 +35,7 @@ export default function TabLayout() {
 
         drawerActiveBackgroundColor: "#3498db",
         drawerActiveTintColor: "#fff",
-        drawerInactiveTintColor: "#333",
+        drawerInactiveTintColor: "#fff",
 
         drawerLabelStyle: {
           fontSize: 16,
@@ -53,12 +53,29 @@ export default function TabLayout() {
       />
 
       <Drawer.Screen
+        name="all-pin-videos"
+        options={{
+          title: "Must Watch",
+          drawerIcon: ({ color }) => (
+            <Ionicons name="play-circle-outline" size={22} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
         name="profile"
         options={{
           title: "Profile",
           drawerIcon: ({ color }) => (
             <Ionicons name="person-outline" size={22} color={color} />
           ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="video-detail"
+        options={{
+          drawerItemStyle: { display: "none" },
         }}
       />
     </Drawer>

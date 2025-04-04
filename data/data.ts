@@ -1,13 +1,11 @@
-import { FeaturedItem } from "@/types/interface";
+import { Category, VideoData } from "@/types/interface";
 
-export const featuredVideoData: FeaturedItem[] = [
+export const featuredVideoData: VideoData[] = [
   {
     id: "1",
-    image_url:
-      "https://i.ytimg.com/vi/YH0FlNYnVCw/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDDXrqX2_H_BESc1bhfwRRlAPZViw",
+    image_url: "https://i.ytimg.com/vi/YH0FlNYnVCw/hq720.jpg",
     title: "The Last of Us",
-    description:
-      "The Last of Us is a post-apocalyptic action-adventure game developed by Naughty Dog and published by Sony Computer Entertainment.",
+    description: "A post-apocalyptic action-adventure game.",
     video_url: "https://www.youtube.com/watch?v=YH0FlNYnVCw",
     category: "video",
     sub_category: "story",
@@ -17,29 +15,27 @@ export const featuredVideoData: FeaturedItem[] = [
   {
     id: "2",
     image_url:
-      "https://i.ytimg.com/vi/YH0FlNYnVCw/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDDXrqX2_H_BESc1bhfwRRlAPZViw",
-    title: "The Last of Us",
-    description:
-      "The Last of Us is a post-apocalyptic action-adventure game developed by Naughty Dog and published by Sony Computer Entertainment.",
+      "https://i.ytimg.com/vi/sbYkLS1fqtg/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCoIyBpbXekRHmEoapoSYTUa_RSBQ",
+    title: "Big Buck Bunny",
+    description: "A short animation film.",
     video_url:
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     category: "animation",
     sub_category: "story",
     is_featured: true,
-    is_pinned: false,
+    is_pinned: true,
   },
-  {
-    id: "3",
-    image_url:
-      "https://i.ytimg.com/vi/YH0FlNYnVCw/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDDXrqX2_H_BESc1bhfwRRlAPZViw",
-    title: "The Last of Us",
-    description:
-      "The Last of Us is a post-apocalyptic action-adventure game developed by Naughty Dog and published by Sony Computer Entertainment.",
-    video_url:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    category: "video",
-    sub_category: "story",
-    is_featured: true,
-    is_pinned: false,
-  },
+];
+
+export const categories: Category[] = [
+  { title: "Video" },
+  { title: "Animation" },
+  { title: "Shorts" },
+  { title: "Live" },
+  { title: "Music" },
+  { title: "Gaming" },
+  { title: "News" },
+  { title: "Sports" },
+  { title: "Entertainment" },
+  { title: "Education" },
 ];

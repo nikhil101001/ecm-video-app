@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 // GoogleSignin.configure({
 //   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
@@ -21,7 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const handleGoogleLogin = () => {
     router.push("/(tabs)");
@@ -60,11 +61,11 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView className="min-h-screen bg-dark">
+    <SafeAreaView className="min-h-screen bg-dark flex-1">
       <BackgroundPattern />
       <Image
         source={require("../../assets/images/gradient-backdrop.png")}
-        className="absolute top-0 left-0 w-full h-[75vh]"
+        className="absolute -top-10 left-0 w-full h-[85vh]"
         resizeMode="cover"
       />
 
@@ -85,20 +86,27 @@ const SignIn = () => {
         <TouchableOpacity
           onPress={handleGoogleLogin}
           disabled={isLoading}
-          className="border-2 p-3 rounded-full flex items-center flex-row gap-x-2 bg-black max-w-xs justify-center px-8"
           style={{
             elevation: 5,
           }}
+          className="border-white/10 border rounded-full overflow-hidden"
         >
-          {isLoading ? (
-            <ActivityIndicator size="small" color="#312651" />
-          ) : (
-            <AntDesign name="google" size={24} color="white" />
-          )}
+          <LinearGradient
+            colors={["#06151D", "#192f6a"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            className="py-4 rounded-full flex items-center flex-row gap-x-2 max-w-xs justify-center px-8"
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <AntDesign name="google" size={24} color="white" />
+            )}
 
-          <Text className="text-center font-semibold text-white ps-4">
-            Continue with Google
-          </Text>
+            <Text className="text-center font-semibold text-white ps-4 text-lg">
+              Continue with Google
+            </Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

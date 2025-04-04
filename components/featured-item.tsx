@@ -1,10 +1,14 @@
 import { memo, useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { useVideoPlayer, VideoView } from "expo-video";
 import YoutubePlayer from "react-native-youtube-iframe";
-
-import { FeaturedItemProps } from "@/types/types";
-import { extractYouTubeVideoId, isYouTubeUrl } from "@/hooks/common";
+import {
+  capitalizeFirstLetter,
+  extractYouTubeVideoId,
+  isYouTubeUrl,
+} from "@/lib/utils";
+import { FeaturedItemProps } from "@/types/interface";
+import { router } from "expo-router";
 
 const FeaturedItemComponent = memo(
   ({ item, isActive, width, height }: FeaturedItemProps) => {
@@ -59,11 +63,17 @@ const FeaturedItemComponent = memo(
     }, [isActive, isYoutube, videoPlayer]);
 
     return (
-      <View
-        className={`overflow-hidden rounded-xl bg-neutral-800 shadow-lg me-4 ${
+      <Pressable
+        className={`overflow-hidden !rounded-2xl bg-neutral-800 shadow-lg me-4 border border-white/10 ${
           isActive ? "opacity-100" : "opacity-70"
         }`}
         style={{ width, height }}
+        onPress={() => {
+          router.push({
+            pathname: "/video-detail",
+            params: { videoData: JSON.stringify(item) },
+          });
+        }}
       >
         {isActive ? (
           isYoutube && youtubeVideoId ? (
@@ -73,6 +83,7 @@ const FeaturedItemComponent = memo(
               play={playing}
               videoId={youtubeVideoId}
               onReady={() => setYoutubeReady(true)}
+              volume={0}
               webViewProps={{
                 renderToHardwareTextureAndroid: true,
               }}
@@ -89,11 +100,7 @@ const FeaturedItemComponent = memo(
               player={videoPlayer}
               allowsFullscreen={true}
               nativeControls={false}
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              className="mb-auto"
+              style={{ width, height }}
             />
           ) : (
             <Image
@@ -110,8 +117,8 @@ const FeaturedItemComponent = memo(
           />
         )}
         <View
-          className={`absolute bottom-0 left-0 right-0 p-4 rounded-b-xl ${
-            item.category === "video" ? "bg-dark/90" : "bg-darkOrange/90"
+          className={`absolute bottom-0 left-0 right-0 p-4 rounded-b-2xl ${
+            item.category === "animation" ? "bg-darkOrange/90" : "bg-dark/90"
           }`}
         >
           <View className="flex-row items-center w-full justify-between gap-2">
@@ -120,17 +127,17 @@ const FeaturedItemComponent = memo(
             </Text>
             <Text
               className={`text-white text-xs font-bold mb-1 rounded-full px-2 py-0.5 ${
-                item.category === "video" ? "bg-primary" : "bg-secondary"
+                item.category === "animation" ? "bg-secondary" : "bg-primary"
               }`}
             >
-              {item.sub_category}
+              {capitalizeFirstLetter(item.sub_category)}
             </Text>
           </View>
           <Text className="text-white/80 text-xs" numberOfLines={1}>
             {item.description}
           </Text>
         </View>
-      </View>
+      </Pressable>
     );
   }
 );
