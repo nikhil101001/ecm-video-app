@@ -1,10 +1,33 @@
 import { Drawer } from "expo-router/drawer";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Image, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import GoogleHeaderProfile from "@/components/google-header-profile";
+import { useCallback, useEffect, useState } from "react";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function TabLayout() {
+  const [headerVisible, setHeaderVisible] = useState(true);
+
+  const handleOrientationChange = useCallback(async () => {
+    try {
+      const currentOrientation = await ScreenOrientation.getOrientationAsync();
+      setHeaderVisible(
+        currentOrientation === ScreenOrientation.Orientation.PORTRAIT_UP
+      );
+    } catch (error) {
+      console.error("Error checking orientation:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const subscription = ScreenOrientation.addOrientationChangeListener(
+      handleOrientationChange
+    );
+    handleOrientationChange();
+    return () => subscription.remove();
+  }, [handleOrientationChange]);
+
   return (
     <Drawer
       screenOptions={{
@@ -73,9 +96,20 @@ export default function TabLayout() {
       />
 
       <Drawer.Screen
+        name="about-us"
+        options={{
+          title: "About Us",
+          drawerIcon: ({ color }) => (
+            <Feather name="info" size={22} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
         name="video-detail"
         options={{
           drawerItemStyle: { display: "none" },
+          headerShown: headerVisible,
         }}
       />
     </Drawer>

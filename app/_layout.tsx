@@ -1,18 +1,41 @@
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "react-native-reanimated";
 import "../global.css";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function RootLayout() {
+  const [statusBarVisible, setStatusBarVisible] = useState(false);
+
   useEffect(() => {
-    // Hide splash screen when component mounts
-    SplashScreen.hideAsync();
+    // Prevent the splash screen from auto-hiding before asset loading is complete.
+    const prepare = async () => {
+      await SplashScreen.preventAutoHideAsync();
+      await SplashScreen.hideAsync();
+    };
+    prepare();
   }, []);
+
+  const handleOrientationChange = useCallback(async () => {
+    try {
+      const currentOrientation = await ScreenOrientation.getOrientationAsync();
+      setStatusBarVisible(
+        currentOrientation !== ScreenOrientation.Orientation.PORTRAIT_UP
+      );
+    } catch (error) {
+      console.error("Error checking orientation:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const subscription = ScreenOrientation.addOrientationChangeListener(
+      handleOrientationChange
+    );
+    handleOrientationChange();
+    return () => subscription.remove();
+  }, [handleOrientationChange]);
 
   return (
     <>
@@ -21,7 +44,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="light" />
+      <StatusBar style="light" hidden={statusBarVisible} />
     </>
   );
 }

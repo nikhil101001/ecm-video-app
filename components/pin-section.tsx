@@ -69,7 +69,12 @@ const PinSection: React.FC = () => {
     <View className="border border-white/10 rounded-xl bg-darkBlue/60 p-4">
       <View className="flex-row justify-between items-center mb-3">
         <Text className="text-white font-bold">Must Watch</Text>
-        <TouchableOpacity className="bg-darkBlue/60 px-3 py-1 rounded-full border border-white/10">
+        <TouchableOpacity
+          className="bg-darkBlue/60 px-3 py-1 rounded-full border border-white/10"
+          onPress={() => {
+            router.push("/all-pin-videos");
+          }}
+        >
           <Text className="text-primary text-sm">View All</Text>
         </TouchableOpacity>
       </View>
