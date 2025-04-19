@@ -72,7 +72,7 @@ const SignIn = () => {
       <View className="p-4 flex-1 items-center justify-between max-h-[80%] m-auto">
         <View className="h-1/2 justify-around items-center">
           <Image
-            source={require("../../assets/images/icon.png")}
+            source={require("../../assets/images/logo.png")}
             resizeMode="contain"
             className="w-24 h-24"
           />

@@ -5,6 +5,7 @@ import { Colors } from "@/constants/Colors";
 import GoogleHeaderProfile from "@/components/google-header-profile";
 import { useCallback, useEffect, useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function TabLayout() {
   const [headerVisible, setHeaderVisible] = useState(true);
@@ -29,89 +30,91 @@ export default function TabLayout() {
   }, [handleOrientationChange]);
 
   return (
-    <Drawer
-      screenOptions={{
-        headerShown: true,
-        headerBackground: () => (
-          <View style={{ backgroundColor: Colors.primary, height: "100%" }} />
-        ),
-        headerTintColor: "#fff",
-        headerTitleAlign: "center",
-        headerShadowVisible: false,
-        headerTitle: () => (
-          <Image
-            source={require("../../assets/images/icon.png")}
-            resizeMode="contain"
-            className="w-12 h-12"
-          />
-        ),
-        headerRight: () => <GoogleHeaderProfile />,
-
-        drawerStyle: {
-          backgroundColor: Colors.primary,
-          width: 240,
-        },
-        drawerType: "front",
-        drawerPosition: "left",
-        drawerHideStatusBarOnOpen: false,
-        drawerStatusBarAnimation: "fade",
-
-        drawerActiveBackgroundColor: "#3498db",
-        drawerActiveTintColor: "#fff",
-        drawerInactiveTintColor: "#fff",
-
-        drawerLabelStyle: {
-          fontSize: 16,
-        },
-      }}
-    >
-      <Drawer.Screen
-        name="index"
-        options={{
-          title: "Home",
-          drawerIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={22} color={color} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer
+        screenOptions={{
+          headerShown: true,
+          headerBackground: () => (
+            <View style={{ backgroundColor: Colors.primary, height: "100%" }} />
           ),
-        }}
-      />
-
-      <Drawer.Screen
-        name="all-pin-videos"
-        options={{
-          title: "Must Watch",
-          drawerIcon: ({ color }) => (
-            <Ionicons name="play-circle-outline" size={22} color={color} />
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+          headerTitle: () => (
+            <Image
+              source={require("../../assets/images/logo.png")}
+              resizeMode="contain"
+              className="w-12 h-12"
+            />
           ),
-        }}
-      />
+          headerRight: () => <GoogleHeaderProfile />,
 
-      <Drawer.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          drawerIcon: ({ color }) => (
-            <Ionicons name="person-outline" size={22} color={color} />
-          ),
-        }}
-      />
+          drawerStyle: {
+            backgroundColor: Colors.primary,
+            width: 240,
+          },
+          drawerType: "front",
+          drawerPosition: "left",
+          drawerHideStatusBarOnOpen: false,
+          drawerStatusBarAnimation: "fade",
 
-      <Drawer.Screen
-        name="about-us"
-        options={{
-          title: "About Us",
-          drawerIcon: ({ color }) => (
-            <Feather name="info" size={22} color={color} />
-          ),
-        }}
-      />
+          drawerActiveBackgroundColor: "#3498db",
+          drawerActiveTintColor: "#fff",
+          drawerInactiveTintColor: "#fff",
 
-      <Drawer.Screen
-        name="video-detail"
-        options={{
-          drawerItemStyle: { display: "none" },
-          headerShown: headerVisible,
+          drawerLabelStyle: {
+            fontSize: 16,
+          },
         }}
-      />
-    </Drawer>
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            title: "Home",
+            drawerIcon: ({ color }) => (
+              <Ionicons name="home-outline" size={22} color={color} />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="all-pin-videos"
+          options={{
+            title: "Must Watch",
+            drawerIcon: ({ color }) => (
+              <Ionicons name="play-circle-outline" size={22} color={color} />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            drawerIcon: ({ color }) => (
+              <Ionicons name="person-outline" size={22} color={color} />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="about-us"
+          options={{
+            title: "About Us",
+            drawerIcon: ({ color }) => (
+              <Feather name="info" size={22} color={color} />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="video-detail"
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: headerVisible,
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }

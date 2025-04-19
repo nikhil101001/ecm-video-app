@@ -1,0 +1,108 @@
+{
+  "project_info": {
+    "project_number": "648812414688",
+    "project_id": "ecm-general",
+    "storage_bucket": "ecm-general.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648812414688:android:32257b8c6d2c764f2d7285",
+        "android_client_info": {
+          "package_name": "com.ecreation.bigbooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648812414688-2pm3cukv89o8djjreadhpcd4lqqt642s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecreation.bigbooks",
+            "certificate_hash": "45c2e5fa6e2e0d25ef3500f6a2e356e536342afc"
+          }
+        },
+        {
+          "client_id": "648812414688-93136cqfdorebfrmmg5409rkq4e038c3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecreation.bigbooks",
+            "certificate_hash": "daac6746e451fcfd300c94455104884771bb4b60"
+          }
+        },
+        {
+          "client_id": "648812414688-ivj3tvkpeabgcjj5n0eg2hmnnbpso770.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecreation.bigbooks",
+            "certificate_hash": "5ba4be1d47ba37c56737148b4c363c4b6900a865"
+          }
+        },
+        {
+          "client_id": "648812414688-meeb2d7huod4b9014b469bkd26uuu8ja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecreation.bigbooks",
+            "certificate_hash": "58f74e37cead90a2b4395d8389834b238bcc4ca4"
+          }
+        },
+        {
+          "client_id": "648812414688-ik10i9pcqcjqknsa7dm2h7cb1e2cv5vs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW1ZKwLXMBv2yPIQq7Sx4ie9x-rXVjlOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648812414688-ik10i9pcqcjqknsa7dm2h7cb1e2cv5vs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648812414688:android:147e1517beb8247c2d7285",
+        "android_client_info": {
+          "package_name": "com.ecreation.ecmvideoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648812414688-ckk5m713vvdsoh47l7gk8gbjrk5sonjq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecreation.ecmvideoapp",
+            "certificate_hash": "a8a510e59acfad80ce2a6ba35d7e703040da83da"
+          }
+        },
+        {
+          "client_id": "648812414688-ik10i9pcqcjqknsa7dm2h7cb1e2cv5vs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW1ZKwLXMBv2yPIQq7Sx4ie9x-rXVjlOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648812414688-ik10i9pcqcjqknsa7dm2h7cb1e2cv5vs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

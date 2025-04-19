@@ -115,7 +115,7 @@ const VideoDetail = () => {
             {relatedVideos.map((item) => (
               <TouchableOpacity
                 key={item._id}
-                className="mr-3 mb-4 flex-1 w-full"
+                className="mr-3 mb-4 flex-1 w-full border border-white/20 rounded-xl"
                 onPress={() => {
                   router.push({
                     pathname: "/video-detail",
@@ -123,6 +123,17 @@ const VideoDetail = () => {
                   });
                 }}
               >
+                {/* Pin Badge */}
+                {(item.is_pinned || item.is_featured) && (
+                  <View
+                    className={`absolute top-2 right-2 p-1 rounded-full z-10 ${
+                      item.is_featured ? "bg-secondary/90" : "bg-yellow-500/90"
+                    }`}
+                  >
+                    <Feather name="star" size={10} color="#FFF" />
+                  </View>
+                )}
+
                 <View
                   className={`${
                     item?.category === "animation"
@@ -130,12 +141,28 @@ const VideoDetail = () => {
                       : "bg-darkBlue"
                   } w-full h-full rounded-xl overflow-hidden`}
                 >
-                  <Image
-                    source={{ uri: item.image_url }}
-                    className="w-full"
-                    resizeMode="cover"
-                    height={Dimensions.get("window").width / 2}
-                  />
+                  <View className="relative">
+                    <Image
+                      source={{ uri: item.image_url }}
+                      className="w-full"
+                      resizeMode="cover"
+                      height={Dimensions.get("window").width / 2}
+                    />
+
+                    {item.sub_category && (
+                      <Text
+                        numberOfLines={1}
+                        className={`absolute bottom-2 left-2 p-1 z-10 text-white text-xs font-bold mb-1 rounded-full px-2 py-0.5 ${
+                          item.category === "animation"
+                            ? "bg-secondary"
+                            : "bg-primary"
+                        }`}
+                      >
+                        {capitalizeFirstLetter(item.sub_category)}
+                      </Text>
+                    )}
+                  </View>
+
                   <View className="px-4 py-3 flex-row items-center justify-between">
                     <View>
                       <Text
