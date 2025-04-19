@@ -7,8 +7,6 @@ import {
   Dimensions,
 } from "react-native";
 import React from "react";
-import { featuredVideoData } from "@/data/data";
-
 import { Feather } from "@expo/vector-icons";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { VideoData } from "@/types/interface";
@@ -25,6 +23,7 @@ const PinCard = ({ item }: { item: VideoData }) => {
       className={`mr-2 rounded-xl overflow-hidden flex-1 relative border border-white/10 ${
         item.category === "animation" ? "bg-darkOrange" : "bg-darkBlue"
       }`}
+      style={{ width: CARD_WIDTH }}
       onPress={() => {
         router.push({
           pathname: "/video-detail",
@@ -42,7 +41,8 @@ const PinCard = ({ item }: { item: VideoData }) => {
       />
 
       <Text
-        className={`text-white text-xs absolute top-0 right-0 px-2 rounded-full m-1 ${
+        numberOfLines={1}
+        className={`text-white text-xs absolute top-1 right-1 px-2 rounded-full m-1 ${
           item.category === "animation" ? "bg-secondary" : "bg-primary"
         }`}
       >
@@ -51,7 +51,10 @@ const PinCard = ({ item }: { item: VideoData }) => {
 
       {/* Content at bottom */}
       <View className="p-2 flex-row items-center justify-between">
-        <Text numberOfLines={2} className="text-white font-medium text-sm">
+        <Text
+          numberOfLines={1}
+          className="text-white font-medium text-sm flex-1"
+        >
           {item.title}
         </Text>
         <Feather
@@ -64,7 +67,7 @@ const PinCard = ({ item }: { item: VideoData }) => {
   );
 };
 
-const PinSection: React.FC = () => {
+const PinSection: React.FC<{ item: VideoData[] }> = ({ item }) => {
   return (
     <View className="border border-white/10 rounded-xl bg-darkBlue/60 p-4">
       <View className="flex-row justify-between items-center mb-3">
@@ -80,9 +83,9 @@ const PinSection: React.FC = () => {
       </View>
 
       <FlatList
-        data={featuredVideoData}
+        data={item}
         renderItem={({ item }) => <PinCard item={item} />}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToInterval={CARD_WIDTH + 12} // Card width + margin

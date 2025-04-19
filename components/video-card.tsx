@@ -18,14 +18,25 @@ const VideoCard = ({ item }: { item: VideoData }) => {
         });
       }}
     >
+      {/* Pin Badge */}
+      {(item.is_pinned || item.is_featured) && (
+        <View
+          className={`absolute top-2 right-2 p-1 rounded-full z-10 ${
+            item.is_featured ? "bg-secondary/90" : "bg-yellow-500/90"
+          }`}
+        >
+          <Feather name="star" size={10} color="#FFF" />
+        </View>
+      )}
+
       <Image
         source={{ uri: item.image_url }}
         resizeMode="cover"
         className="rounded-xl border border-white/10 flex-1 w-full min-h-[100px] sm:h-[200px]"
       />
 
-      <View className="p-2 flex-row items-center justify-between">
-        <View className="gap-1">
+      <View className="p-2 flex-row items-center justify-between gap-2">
+        <View className="gap-1 flex-1">
           <Text numberOfLines={1} className="text-white font-medium text-sm">
             {item.title}
           </Text>

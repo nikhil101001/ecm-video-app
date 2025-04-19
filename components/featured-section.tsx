@@ -1,12 +1,12 @@
 import { View, Dimensions, Pressable } from "react-native";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import PagerView from "react-native-pager-view";
-import { featuredVideoData } from "@/data/data";
 import FeaturedItemComponent from "./featured-item";
+import { VideoData } from "@/types/interface";
 
-const FeaturedSection = () => {
+const FeaturedSection = ({ item }: { item: VideoData[] }) => {
   const pagerRef = useRef<PagerView>(null);
-  const videoData = featuredVideoData;
+  const videoData = item;
 
   const windowWidth = Dimensions.get("window").width;
   const ITEM_WIDTH = windowWidth - 32; // 16 padding on each side
@@ -62,7 +62,7 @@ const FeaturedSection = () => {
         offscreenPageLimit={2}
       >
         {videoData.map((item, index) => (
-          <View key={`${item.id}-${index}`} style={{ padding: 0 }}>
+          <View key={`${item._id}-${index}`} style={{ padding: 0 }}>
             <FeaturedItemComponent
               item={item}
               isActive={index === activeIndex}

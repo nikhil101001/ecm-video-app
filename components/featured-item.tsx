@@ -116,21 +116,27 @@ const FeaturedItemComponent = memo(
             resizeMode="cover"
           />
         )}
+
+        <Text
+          numberOfLines={1}
+          className={`absolute top-2 right-2 p-1 z-10 text-white text-xs font-bold mb-1 rounded-full px-2 py-0.5 ${
+            item.category === "animation" ? "bg-secondary" : "bg-primary"
+          }`}
+        >
+          {capitalizeFirstLetter(item.sub_category)}
+        </Text>
+
         <View
           className={`absolute bottom-0 left-0 right-0 p-4 rounded-b-2xl ${
             item.category === "animation" ? "bg-darkOrange/90" : "bg-dark/90"
           }`}
         >
           <View className="flex-row items-center w-full justify-between gap-2">
-            <Text className="text-white text-sm font-bold mb-1">
-              {item.title}
-            </Text>
             <Text
-              className={`text-white text-xs font-bold mb-1 rounded-full px-2 py-0.5 ${
-                item.category === "animation" ? "bg-secondary" : "bg-primary"
-              }`}
+              className="text-white text-sm font-bold mb-1"
+              numberOfLines={1}
             >
-              {capitalizeFirstLetter(item.sub_category)}
+              {item.title}
             </Text>
           </View>
           <Text className="text-white/80 text-xs" numberOfLines={1}>

@@ -1,6 +1,6 @@
 import VideoPlayer from "@/components/video-player";
-import { featuredVideoData } from "@/data/data";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { useVideosStore } from "@/store/use-videos";
 import { VideoData } from "@/types/interface";
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
@@ -21,14 +21,16 @@ const VideoDetail = () => {
     [params.videoData]
   );
 
+  const { videos } = useVideosStore();
+
   const [relatedVideos, setRelatedVideos] = useState<VideoData[]>([]);
   const [expandDescription, setExpandDescription] = useState(false);
 
   // Get related videos based on category
   useEffect(() => {
-    const related = featuredVideoData.filter(
+    const related = videos.filter(
       (video) =>
-        video.id !== videoData.id &&
+        video._id !== videoData._id &&
         (video.category === videoData.category ||
           video.sub_category === videoData.sub_category)
     );
@@ -52,16 +54,18 @@ const VideoDetail = () => {
       >
         <View className="flex-1 px-4 pt-6 space-y-4">
           {/* Title */}
-          <View className="flex flex-row items-center justify-between">
-            <View className="flex-1 gap-2">
-              <Text className="text-xl font-bold text-white">
-                {videoData.title}
-              </Text>
-              {/* Categories */}
-              <Text className="text-xs text-white/50">
-                {capitalizeFirstLetter(videoData.sub_category)}
-              </Text>
-            </View>
+          <View className="flex-1 gap-2">
+            <Text className="text-xl font-bold text-white">
+              {videoData.title}
+            </Text>
+          </View>
+
+          <View className="flex flex-row items-center justify-between flex-wrap gap-2">
+            <Text className="text-xs text-white/50">
+              {capitalizeFirstLetter(videoData.sub_category)}
+            </Text>
+
+            {/* Categories */}
             <Text
               className={`text-sm font-semibold text-white rounded-full bg-primary px-2 py-1 ${
                 videoData.category === "animation" && "bg-secondary"
@@ -110,7 +114,7 @@ const VideoDetail = () => {
           <View className="px-4">
             {relatedVideos.map((item) => (
               <TouchableOpacity
-                key={item.id}
+                key={item._id}
                 className="mr-3 mb-4 flex-1 w-full"
                 onPress={() => {
                   router.push({
@@ -141,9 +145,9 @@ const VideoDetail = () => {
                         {item.title}
                       </Text>
 
-                      {item.created_at && (
+                      {item.createdAt && (
                         <Text className="text-gray-400 text-xs mt-1">
-                          {new Date(item.created_at).toLocaleDateString(
+                          {new Date(item.createdAt).toLocaleDateString(
                             "en-US",
                             {
                               year: "numeric",

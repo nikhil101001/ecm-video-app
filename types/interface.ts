@@ -1,5 +1,5 @@
 export interface VideoData {
-  id: string;
+  _id: string;
   image_url: string;
   title: string;
   description: string;
@@ -8,11 +8,12 @@ export interface VideoData {
   sub_category: string;
   is_featured: boolean;
   is_pinned: boolean;
-  created_at?: string;
-  updated_at?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Category {
+  _id: string;
   title: string;
 }
 
