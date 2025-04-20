@@ -4,23 +4,48 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import { useState } from "react";
-import { Feather, FontAwesome6 } from "@expo/vector-icons";
+import { AntDesign, Feather, FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useUserStore } from "@/store/use-user";
 
 const GoogleHeaderProfile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { clearLocalUser, user } = useUserStore();
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+      await clearLocalUser();
+      setShowDropdown(false);
+
+      router.replace("/(auth)");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
     <View className="px-4">
       <TouchableOpacity onPress={toggleDropdown}>
         <View className="flex-row items-center">
-          <Text className="text-base font-medium text-white">Profile</Text>
+          {user?.photoURL ? (
+            <Image
+              source={{ uri: user?.photoURL }} // Replace with actual user photo URL
+              className="w-8 h-8 rounded-full"
+            />
+          ) : (
+            <View className="w-8 h-8 rounded-full bg-gray-800 items-center justify-center">
+              <AntDesign name="user" size={14} color="white" />
+            </View>
+          )}
         </View>
       </TouchableOpacity>
 
@@ -47,10 +72,7 @@ const GoogleHeaderProfile = () => {
 
                 <TouchableOpacity
                   className="px-2 py-3 flex-row items-center gap-2"
-                  onPress={() => {
-                    // Handle Sign out action
-                    setShowDropdown(false);
-                  }}
+                  onPress={handleSignOut}
                 >
                   <FontAwesome6 name="power-off" size={14} color="white" />
                   <Text className="text-sm text-white">Sign out</Text>

@@ -1,14 +1,40 @@
 import { Drawer } from "expo-router/drawer";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { Image, View } from "react-native";
+import { ActivityIndicator, Image, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import GoogleHeaderProfile from "@/components/google-header-profile";
 import { useCallback, useEffect, useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useUserStore } from "@/store/use-user";
+import { router } from "expo-router";
 
 export default function TabLayout() {
+  const { checkAuth, clearLocalUser, user } = useUserStore();
+
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
+
+  const verifyAuthentication = async () => {
+    setIsAuthChecking(true);
+    try {
+      const isAuthenticated = await checkAuth();
+      if (!isAuthenticated) {
+        router.replace("/(auth)");
+      }
+    } catch (error) {
+      console.error("Auth verification error:", error);
+      clearLocalUser();
+      router.replace("/(auth)");
+    } finally {
+      setIsAuthChecking(false);
+    }
+  };
+
+  // Authentication check
+  useEffect(() => {
+    verifyAuthentication();
+  }, []);
 
   const handleOrientationChange = useCallback(async () => {
     try {
@@ -28,6 +54,22 @@ export default function TabLayout() {
     handleOrientationChange();
     return () => subscription.remove();
   }, [handleOrientationChange]);
+
+  // Show loading indicator while checking authentication
+  if (isAuthChecking) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors.primary,
+        }}
+      >
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

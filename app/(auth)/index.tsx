@@ -11,53 +11,91 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth, { firebase } from "@react-native-firebase/auth";
 
-// GoogleSignin.configure({
-//   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-// });
+import { showToast } from "@/lib/utils";
+import { useUserStore } from "@/store/use-user";
+import { firebaseConfig } from "@/firebaseConfig";
+import { addUser, fetchUsersByEmail } from "@/lib/actions/user-action";
 
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// }
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+});
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const SignIn = () => {
+  const { setUser, setLocalUser } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState("");
 
-  const handleGoogleLogin = () => {
-    router.push("/(tabs)");
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoading(true);
 
-    // try {
-    //   setGoogleLoading(true);
-    //   await GoogleSignin.hasPlayServices({
-    //     showPlayServicesUpdateDialog: true,
-    //   });
-    //   const signInResult = await GoogleSignin.signIn();
-    //   const token = signInResult.data?.idToken;
-    //   if (!token) {
-    //     throw new Error("No token found");
-    //   }
-    //   const googleCredential = auth.GoogleAuthProvider.credential(token);
-    //   const { user } = await auth().signInWithCredential(googleCredential);
-    //   const existingUser = await axios.get(
-    //     `${apiEndpoint}/get-user?email=${user.email}`
-    //   );
-    //   if (!existingUser?.data) {
-    //     await axios.post(`${apiEndpoint}/users`, {
-    //       email: user.email,
-    //       name: user.displayName,
-    //     });
-    //   }
-    //   setUser(user);
-    //   await setLocalUser(user);
-    //   showToast("Signed In Successfully");
-    // } catch (error) {
-    //   console.error("Google Sign-In Error", error);
-    //   setUser(null);
-    //   showToast("Error signing in with Google");
-    // } finally {
-    //   setGoogleLoading(false);
-    // }
+      // Validate Google Play Services first
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+
+      // Sign in process with better error checking
+      const userInfo = await GoogleSignin.signIn();
+      const idToken = userInfo.data?.idToken;
+
+      if (!idToken) {
+        throw new Error("Authentication failed: No token received");
+      }
+
+      // Firebase authentication
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const { user: googleUser } = await auth().signInWithCredential(
+        googleCredential
+      );
+
+      if (!googleUser?.email) {
+        throw new Error("Invalid user data: Email required");
+      }
+
+      // User management with proper error checking
+      const existingUser = await fetchUsersByEmail(googleUser.email);
+
+      if (!existingUser) {
+        const newUser = await addUser({
+          email: googleUser.email,
+          name: googleUser.displayName || "",
+          phone: googleUser.phoneNumber || "",
+          photoURL: googleUser.photoURL || "",
+        });
+
+        setUser(newUser);
+        await setLocalUser(newUser);
+      } else {
+        setUser(existingUser);
+        await setLocalUser(existingUser);
+      }
+
+      showToast("Signed In Successfully");
+      router.push("/(tabs)");
+    } catch (error) {
+      console.error(
+        "Google Sign-In Error:",
+        error instanceof Error ? error.message : JSON.stringify(error)
+      );
+      setUser(null);
+
+      // More descriptive error messages
+      showToast(
+        `Sign-in failed: ${
+          error instanceof Error
+            ? error.message
+            : "Error signing in with Google"
+        }`
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

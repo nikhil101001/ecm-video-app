@@ -44,8 +44,8 @@ const HomeScreen = () => {
           (video: VideoData) => !video.is_pinned
         );
 
-        setPinnedVideos(pinnedVideos);
         setVideos([...pinnedVideos, ...unpinnedVideos]);
+        setPinnedVideos(pinnedVideos);
         setFeaturedVideos(res.filter((video: VideoData) => video.is_featured));
       }
     } catch (error) {
@@ -59,6 +59,10 @@ const HomeScreen = () => {
   useEffect(() => {
     if (videos.length < 1) {
       getVideos();
+    } else {
+      // Initialize local state from existing store data
+      setPinnedVideos(videos.filter((video) => video.is_pinned));
+      setFeaturedVideos(videos.filter((video) => video.is_featured));
     }
   }, []);
 

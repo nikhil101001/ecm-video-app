@@ -1,5 +1,7 @@
 import { ToastAndroid } from "react-native";
 
+export const ApiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 export const showToast = (msg: string) => {
   ToastAndroid.showWithGravity(msg, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
 };
@@ -23,5 +25,3 @@ export const isYouTubeUrl = (url: string): boolean => {
 export const capitalizeFirstLetter = (string: string): string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
-export const ApiUrl = process.env.EXPO_PUBLIC_API_URL;
