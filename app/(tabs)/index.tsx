@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  BackHandler,
   RefreshControl,
   Text,
   TouchableOpacity,
@@ -19,15 +20,52 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { BlurView } from "expo-blur";
 import { Feather } from "@expo/vector-icons";
 import { useVideosStore } from "@/store/use-videos";
+import { usePathname } from "expo-router";
+import { useUserStore } from "@/store/use-user";
 
 const HomeScreen = () => {
-  const { activeCategory } = useCategoryStore();
+  const { activeCategory, setActiveCategory } = useCategoryStore();
   const { videos, setVideos } = useVideosStore();
+  const { checkAuth } = useUserStore();
+  const pathname = usePathname(); // Use this hook to get the current path
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [pinnedVideos, setPinnedVideos] = useState<VideoData[]>([]);
   const [featuredVideos, setFeaturedVideos] = useState<VideoData[]>([]);
+
+  // Handle back button press to prevent navigation to login screen
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        // First check if we're at the root path of the tab navigation
+        if (
+          pathname === "/(tabs)/index" ||
+          pathname === "/(tabs)/" ||
+          pathname === "/"
+        ) {
+          // Call checkAuth, but handle it differently
+          checkAuth()
+            .then((isAuthenticated) => {
+              if (isAuthenticated) {
+                // If authenticated and on home screen, exit app
+                BackHandler.exitApp();
+              }
+            })
+            .catch((error) => {
+              console.error("Auth verification error:", error);
+            });
+
+          // Return true synchronously to prevent default back behavior while we check auth
+          return true;
+        }
+        return false; // Let the default back navigation happen in other screens
+      }
+    );
+
+    return () => backHandler.remove();
+  }, [pathname, checkAuth]);
 
   const getVideos = async () => {
     setLoading(true);
@@ -47,6 +85,7 @@ const HomeScreen = () => {
         setVideos([...pinnedVideos, ...unpinnedVideos]);
         setPinnedVideos(pinnedVideos);
         setFeaturedVideos(res.filter((video: VideoData) => video.is_featured));
+        setActiveCategory("all");
       }
     } catch (error) {
       setError(true);
@@ -130,9 +169,11 @@ const HomeScreen = () => {
           numColumns={2}
           ListHeaderComponent={() => (
             <View>
-              <FeaturedSection item={featuredVideos} />
+              {featuredVideos.length > 0 && (
+                <FeaturedSection item={featuredVideos} />
+              )}
               <View className="px-4 py-2 gap-3">
-                <PinSection item={pinnedVideos} />
+                {pinnedVideos.length > 0 && <PinSection item={pinnedVideos} />}
                 <CategoriesTab />
               </View>
             </View>

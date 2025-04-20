@@ -1,9 +1,9 @@
 import {
   Text,
-  ScrollView,
-  TouchableOpacity,
-  View,
   ActivityIndicator,
+  Pressable,
+  FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { useCategoryStore } from "@/store/use-category";
 import { capitalizeFirstLetter } from "@/lib/utils";
@@ -75,20 +75,26 @@ const CategoriesTab = () => {
     }
   };
 
+  const handleCategoryPress = (categoryTitle: string) => {
+    // Use toLowerCase to match the existing behavior
+    setActiveCategory(categoryTitle.toLowerCase());
+  };
+
   return (
     <Animated.View entering={FadeIn} className="my-2">
-      <ScrollView
+      <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 8 }}
-      >
-        {categories.map((category, index) => {
-          const isActive = activeCategory === category.title.toLowerCase();
-          const icon = getCategoryIcon(category.title);
+        data={categories}
+        keyExtractor={(item) => item.title}
+        renderItem={({ item, index }) => {
+          const isActive = activeCategory === item.title.toLowerCase();
+          const icon = getCategoryIcon(item.title);
 
           return (
             <Animated.View
-              key={category.title}
+              key={item.title}
               entering={FadeInRight.delay(index * 50)}
             >
               <TouchableOpacity
@@ -100,7 +106,7 @@ const CategoriesTab = () => {
                 style={{
                   elevation: isActive ? 3 : 0,
                 }}
-                onPress={() => setActiveCategory(category.title)}
+                onPress={() => handleCategoryPress(item.title)}
               >
                 <Feather
                   name={icon}
@@ -112,15 +118,14 @@ const CategoriesTab = () => {
                     isActive ? "text-white" : "text-gray-400"
                   }`}
                 >
-                  {capitalizeFirstLetter(category.title)}
+                  {capitalizeFirstLetter(item.title)}
                 </Text>
               </TouchableOpacity>
             </Animated.View>
           );
-        })}
-      </ScrollView>
+        }}
+      />
     </Animated.View>
   );
 };
-
 export default CategoriesTab;

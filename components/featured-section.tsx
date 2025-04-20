@@ -1,12 +1,13 @@
-import { View, Dimensions, Pressable } from "react-native";
+import { View, Dimensions, Pressable, FlatList } from "react-native";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import PagerView from "react-native-pager-view";
+import { useSharedValue } from "react-native-reanimated";
 import FeaturedItemComponent from "./featured-item";
 import { VideoData } from "@/types/interface";
 
 const FeaturedSection = ({ item }: { item: VideoData[] }) => {
-  const pagerRef = useRef<PagerView>(null);
+  const flatListRef = useRef<FlatList>(null);
   const videoData = item;
+  const progress = useSharedValue<number>(0);
 
   const windowWidth = Dimensions.get("window").width;
   const ITEM_WIDTH = windowWidth - 32; // 16 padding on each side
@@ -16,19 +17,35 @@ const FeaturedSection = ({ item }: { item: VideoData[] }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (pagerRef.current) {
+      if (flatListRef.current) {
         const nextIndex = (activeIndex + 1) % videoData.length;
-        pagerRef.current.setPage(nextIndex);
+        scrollToIndex(nextIndex);
       }
     }, 8000);
 
     return () => clearInterval(interval);
   }, [activeIndex, videoData.length]);
 
-  const handlePageSelected = useCallback((event: any) => {
-    const newIndex = event.nativeEvent.position;
-    setActiveIndex(newIndex);
+  const scrollToIndex = useCallback((index: number) => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        index,
+        animated: true,
+        viewOffset: 0,
+        viewPosition: 0,
+      });
+    }
   }, []);
+
+  const handleScroll = useCallback(
+    (event: any) => {
+      const scrollX = event.nativeEvent.contentOffset.x;
+      const index = Math.round(scrollX / ITEM_WIDTH);
+      setActiveIndex(index);
+      progress.value = scrollX / ITEM_WIDTH;
+    },
+    [ITEM_WIDTH, progress]
+  );
 
   const renderPaginationDots = () => {
     return (
@@ -37,7 +54,7 @@ const FeaturedSection = ({ item }: { item: VideoData[] }) => {
           <Pressable
             key={`dot-${index}`}
             onPress={() => {
-              pagerRef.current?.setPage(index);
+              scrollToIndex(index);
             }}
           >
             <View
@@ -51,27 +68,69 @@ const FeaturedSection = ({ item }: { item: VideoData[] }) => {
     );
   };
 
+  const renderItem = useCallback(
+    ({ item, index }: { item: VideoData; index: number }) => {
+      const isActive = indexIsActive(activeIndex, index);
+
+      if (!isActive) {
+        return (
+          <View
+            key={`placeholder-${item._id}`}
+            style={{
+              width: ITEM_WIDTH,
+              height: ITEM_HEIGHT,
+              marginRight: 8,
+            }}
+          />
+        );
+      }
+
+      return (
+        <View style={{ width: ITEM_WIDTH, marginRight: 8 }}>
+          <FeaturedItemComponent
+            item={item}
+            isActive={index === activeIndex}
+            width={ITEM_WIDTH}
+            height={ITEM_HEIGHT}
+          />
+        </View>
+      );
+    },
+    [activeIndex, ITEM_WIDTH, ITEM_HEIGHT]
+  );
+
+  function indexIsActive(currentIndex: number, myIndex: number) {
+    return (
+      currentIndex === myIndex ||
+      currentIndex - 1 === myIndex ||
+      currentIndex + 1 === myIndex
+    );
+  }
+
   return (
     <View className="m-4">
-      <PagerView
-        ref={pagerRef}
+      <FlatList
+        ref={flatListRef}
+        data={videoData}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item._id}-${index}`}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        snapToInterval={ITEM_WIDTH + 8} // ITEM_WIDTH + marginRight
+        snapToAlignment="start"
+        decelerationRate="fast"
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        initialScrollIndex={0}
+        getItemLayout={(_, index) => ({
+          length: ITEM_WIDTH + 8, // ITEM_WIDTH + marginRight
+          offset: (ITEM_WIDTH + 8) * index,
+          index,
+        })}
         style={{ height: ITEM_HEIGHT }}
-        initialPage={0}
-        onPageSelected={handlePageSelected}
-        pageMargin={8}
-        offscreenPageLimit={2}
-      >
-        {videoData.map((item, index) => (
-          <View key={`${item._id}-${index}`} style={{ padding: 0 }}>
-            <FeaturedItemComponent
-              item={item}
-              isActive={index === activeIndex}
-              width={ITEM_WIDTH}
-              height={ITEM_HEIGHT}
-            />
-          </View>
-        ))}
-      </PagerView>
+      />
+
       {renderPaginationDots()}
     </View>
   );

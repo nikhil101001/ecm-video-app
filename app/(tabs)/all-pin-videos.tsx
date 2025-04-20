@@ -20,7 +20,7 @@ import { useCategoryStore } from "@/store/use-category";
 import { useVideosStore } from "@/store/use-videos";
 
 const AllPinVideoList = () => {
-  const { activeCategory } = useCategoryStore();
+  const { activeCategory, setActiveCategory } = useCategoryStore();
   const { videos, setVideos } = useVideosStore();
 
   const [loading, setLoading] = useState(false);
@@ -42,6 +42,7 @@ const AllPinVideoList = () => {
         );
 
         setVideos([...pinnedVideos, ...unpinnedVideos]);
+        setActiveCategory("all");
       }
     } catch (error) {
       setError(true);
@@ -77,10 +78,6 @@ const AllPinVideoList = () => {
   return (
     <View className="min-h-screen h-full bg-dark p-2">
       <Text className="text-white px-2 pb-2 font-bold">Must Watch</Text>
-
-      <View className="pb-2">
-        <CategoriesTab />
-      </View>
 
       {error && (
         <Animated.View
@@ -123,6 +120,12 @@ const AllPinVideoList = () => {
           refreshControl={refreshControl}
           keyExtractor={(_, index) => index.toString()}
           numColumns={2}
+          ListHeaderComponent={() => (
+            <View className="pb-2 bg-dark">
+              <CategoriesTab />
+            </View>
+          )}
+          stickyHeaderIndices={[0]}
           renderItem={({ item, index }) => (
             <Animated.View
               entering={FadeInDown.delay(index * 100).springify()}

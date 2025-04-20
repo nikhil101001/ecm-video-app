@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 
 const About = () => {
   const openMap = () => {

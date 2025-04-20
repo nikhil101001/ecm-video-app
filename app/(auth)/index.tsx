@@ -133,7 +133,7 @@ const SignIn = () => {
             colors={["#06151D", "#192f6a"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            className="py-4 rounded-full flex items-center flex-row gap-x-2 max-w-xs justify-center px-8"
+            className="py-4 rounded-full flex items-center flex-row gap-x-2 max-w-xs justify-center px-8 bg-dark"
           >
             {isLoading ? (
               <ActivityIndicator size="small" color="#fff" />

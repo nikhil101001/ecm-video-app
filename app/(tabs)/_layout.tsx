@@ -10,7 +10,7 @@ import { useUserStore } from "@/store/use-user";
 import { router } from "expo-router";
 
 export default function TabLayout() {
-  const { checkAuth, clearLocalUser, user } = useUserStore();
+  const { checkAuth, clearLocalUser } = useUserStore();
 
   const [headerVisible, setHeaderVisible] = useState(true);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
@@ -98,7 +98,7 @@ export default function TabLayout() {
           drawerType: "front",
           drawerPosition: "left",
           drawerHideStatusBarOnOpen: false,
-          drawerStatusBarAnimation: "fade",
+          drawerStatusBarAnimation: "slide",
 
           drawerActiveBackgroundColor: "#3498db",
           drawerActiveTintColor: "#fff",

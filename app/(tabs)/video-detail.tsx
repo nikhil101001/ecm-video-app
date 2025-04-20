@@ -164,7 +164,7 @@ const VideoDetail = () => {
                   </View>
 
                   <View className="px-4 py-3 flex-row items-center justify-between">
-                    <View>
+                    <View className="flex-1">
                       <Text
                         numberOfLines={2}
                         className="text-white text-sm font-medium"
