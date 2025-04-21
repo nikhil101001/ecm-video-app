@@ -81,11 +81,17 @@ const VideoDetail = () => {
               Description
             </Text>
             <View className="bg-darkBlue p-4 rounded-xl">
-              <Text className="text-gray-300 text-sm break-all" selectable>
+              <Text
+                className="text-gray-300 text-sm whitespace-pre-wrap"
+                selectable={true}
+                dataDetectorType="all"
+              >
                 {videoData.description.length > 100 && !expandDescription
                   ? `${videoData.description.slice(0, 100)}...`
                   : videoData.description}
               </Text>
+
+              {/* Show more/less button */}
               {videoData.description.length > 100 && (
                 <TouchableOpacity
                   onPress={() => setExpandDescription(!expandDescription)}
@@ -127,7 +133,7 @@ const VideoDetail = () => {
                 {(item.is_pinned || item.is_featured) && (
                   <View
                     className={`absolute top-2 right-2 p-1 rounded-full z-10 ${
-                      item.is_featured ? "bg-secondary/90" : "bg-yellow-500/90"
+                      item.is_featured ? "bg-orange-500/90" : "bg-yellow-500/90"
                     }`}
                   >
                     <Feather name="star" size={10} color="#FFF" />

@@ -50,7 +50,7 @@ const PinCard = ({ item }: { item: VideoData }) => {
       </Text>
 
       {/* Content at bottom */}
-      <View className="p-2 flex-row items-center justify-between">
+      <View className="p-2 flex-row items-center justify-between gap-2">
         <Text
           numberOfLines={1}
           className="text-white font-medium text-sm flex-1"

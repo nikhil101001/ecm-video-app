@@ -58,7 +58,7 @@ const FeaturedSection = ({ item }: { item: VideoData[] }) => {
             }}
           >
             <View
-              className={`h-2 mx-0.5 rounded-full ${
+              className={`h-2 mx-0.5 rounded-full border border-white/10 ${
                 index === activeIndex ? "w-4 bg-primary" : "w-2 bg-white/10"
               }`}
             />

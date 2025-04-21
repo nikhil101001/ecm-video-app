@@ -1,8 +1,9 @@
 import { extractYouTubeVideoId, isYouTubeUrl } from "@/lib/utils";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { Image, View, useWindowDimensions } from "react-native";
+import { BackHandler, Image, View, useWindowDimensions } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { useEffect } from "react";
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -27,10 +28,27 @@ const VideoPlayer = ({ videoUrl, imageUrl }: VideoPlayerProps) => {
     player.volume = 1.0;
     player.loop = true;
   });
+
   const isYouTubeVideo = isYouTubeUrl(videoUrl);
   const youtubeVideoId = isYouTubeVideo
     ? extractYouTubeVideoId(videoUrl)
     : null;
+
+  useEffect(() => {
+    const backAction = () => {
+      if (videoPlayer) {
+        videoPlayer.pause();
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [videoPlayer]);
 
   return (
     <View

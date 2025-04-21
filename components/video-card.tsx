@@ -22,7 +22,7 @@ const VideoCard = ({ item }: { item: VideoData }) => {
       {(item.is_pinned || item.is_featured) && (
         <View
           className={`absolute top-2 right-2 p-1 rounded-full z-10 ${
-            item.is_featured ? "bg-secondary/90" : "bg-yellow-500/90"
+            item.is_featured ? "bg-orange-500/90" : "bg-yellow-500/90"
           }`}
         >
           <Feather name="star" size={10} color="#FFF" />
