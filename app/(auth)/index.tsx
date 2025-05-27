@@ -112,13 +112,13 @@ const SignIn = () => {
           <Image
             source={require("../../assets/images/logo.png")}
             resizeMode="contain"
-            className="w-24 h-24"
+            className="max-w-64 max-h-44"
           />
-          <Image
+          {/* <Image
             source={require("../../assets/images/text-logo.png")}
             className="w-64 h-24"
             resizeMode="contain"
-          />
+          /> */}
         </View>
 
         <TouchableOpacity

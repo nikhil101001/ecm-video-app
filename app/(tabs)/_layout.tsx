@@ -86,7 +86,7 @@ export default function TabLayout() {
             <Image
               source={require("../../assets/images/logo.png")}
               resizeMode="contain"
-              className="w-12 h-12"
+              className="w-32 h-14"
             />
           ),
           headerRight: () => <GoogleHeaderProfile />,

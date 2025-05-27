@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ECM",
+    "name": "My Cartoon TV",
     "slug": "ecm-video-app",
-    "scheme": "ecm",
+    "scheme": "myCartoonTV",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
