@@ -2,7 +2,7 @@
   "expo": {
     "name": "My Cartoon TV",
     "slug": "ecm-video-app",
-    "scheme": "myCartoonTV",
+    "scheme": "mycartoontv",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
@@ -39,12 +39,7 @@
           }
         }
       ],
-      [
-        "expo-video",
-        {
-          "supportsPictureInPicture": true
-        }
-      ],
+      ["expo-video"],
       "@react-native-google-signin/google-signin"
     ],
     "experiments": {
